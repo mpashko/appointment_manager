@@ -1,0 +1,51 @@
+{% extends 'index_form.html' %}
+{% block content_form %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{ appointment.subject }} <small><a href="/appointment/{{ appointment.id }}/participants">Participants</a></small></h3>
+    </div>
+    <div class="panel-body">
+        <form method="post">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Choose date</div>
+                        <div class="panel-body">
+                            {% for date in appointment.dates %}
+                                <div class="radio">
+                                    <label><input type="radio" name="selected_date" value="{{ date }}">{{ date }}</label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Choose time</div>
+                        <div class="panel-body">
+                            {% for time_frame in appointment.time %}
+                                <div class="radio">
+                                    <label><input type="radio" name="selected_time" value="{{ time_frame }}">{{ time_frame[0] }}:00 - {{ time_frame[1] }}:00</label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>Full name</label>
+                        <input class="form-control" placeholder="Enter full name" name="full_name" type="text" value="{{ full_name }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input class="form-control" placeholder="Enter email" name="email" type="text" value="{{ email }}">
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="Submit">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

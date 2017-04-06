@@ -1,0 +1,48 @@
+{% extends 'index_form.html' %}
+{% block content_form %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Appointment creation form</h3>
+    </div>
+    <div class="panel-body">
+        <form method="post">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <input class="form-control" name="subject" value="{{subject}}" placeholder="Enter appointment subject">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <small class="form-text text-muted">(optional)</small>
+                        <textarea class="form-control" rows="3" name="description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Additional information</label>
+                        <small class="form-text text-muted">(optional)</small>
+                        <textarea class="form-control" rows="6" name="additional_info"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Choose date</label>
+                        <div id="custom_datepicker"></div>
+                        <input type="hidden" id="selected_date" name="selected_date">
+                    </div>
+                    <div class="form-group">
+                        <label>Choose time</label>
+                        <div>
+                            <select class="selectpicker" name="selected_time" multiple>
+                                {% for time_range in time_ranges %}
+                                <option value="{{ time_range[0] }},{{ time_range[1] }}">{{ time_range[0] }}:00 - {{ time_range[1] }}:00</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input class="btn btn-success btn-block" type="submit" value="Arrange">
+        </form>
+    </div>
+</div>
+{% endblock %}
