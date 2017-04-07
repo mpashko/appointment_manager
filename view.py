@@ -5,11 +5,16 @@ from environment import parse_dates, parse_time_ranges, parse_time
 
 @app.route('/')
 def index():
-    return render_template('index_login.html')
+    return redirect('/sign_up')
 
 
-@app.route('/login', methods=('GET', 'POST'))
-def log_in():
+@app.route('/success')
+def success():
+    return render_template('/index_login.html')
+
+
+@app.route('/sign_up', methods=('GET', 'POST'))
+def sign_up():
     if request.method == 'POST':
         user = request.form.get('login', '')
         if not user:
@@ -25,7 +30,6 @@ def add_appointment():
     time_ranges = [(t, t + 1) for t in range(20) if 8 <= t <= 20]
     form_data = {'subject': '', 'description': '', 'additional_info': ''}
     if request.method == 'POST':
-        # initiator = request.form.get('user', '')
         subject = request.form.get('subject', '')
         description = request.form.get('description', '')
         additional_info = request.form.get('additional_info', '')
@@ -50,7 +54,7 @@ def add_appointment():
             env.add_appointment(appointment)
             link = '{}/appointment/{}'.format(request.host, appointment.get_id())
             flash('Appointment created. Link to share: {}'.format(link), category='success')
-            return redirect('/login')
+            return redirect('/sign_up')
     return render_template('creation_form.html', time_ranges=time_ranges, **form_data)
 
 
@@ -69,20 +73,30 @@ def appointment_details(id):
         form_data['date'] = date
 
         if not date or not initial_time or not full_name or not email:
-            flash('All field should be filled', category='danger')
+            flash('All fields should be filled', category='danger')
         else:
             parsed_time = parse_time(initial_time)
             form_data['time'] = parsed_time
 
             env.add_participant(id, form_data)
             flash('Successfully submitted', category='success')
-            return redirect('/')
+            return redirect('/success')
     return render_template('invitation_form.html', appointment=appointment, **form_data)
+
+
+@app.route('/appointment/<id>/log_in', methods=('GET', 'POST'))
+def log_in(id):
+    if request.method == 'POST':
+        user = request.form.get('login', '')
+        if not env.user_verification(user):
+            flash('You have not permissions to log in', category='danger')
+        else:
+            return redirect('/appointment/{}/participants'.format(id))
+    return render_template('login.html')
 
 
 @app.route('/appointment/<id>/participants')
 def show_participants(id):
     appointment = env.get_appointment(id)
-    return render_template('participants_list.html',
-                           subject=appointment.subject,
+    return render_template('participants_list.html', subject=appointment.subject,
                            participants=appointment.participants)

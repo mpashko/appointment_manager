@@ -40,14 +40,16 @@ class Environment:
         appointment = self.get_appointment(appointment_id)
         appointment.append_participant(participant)
 
+    def user_verification(self, user):
+        return user if user in self.users else ''
+
 
 class Appointment:
     counter = 0
 
-    def __init__(self, initiator, subject, description, additional_info, dates, time):
+    def __init__(self, subject, description, additional_info, dates, time):
         Appointment.counter += 1
         self.id = self.counter
-        self.initiator = initiator
         self.subject = subject
         self.description = description
         self.additional_info = additional_info
@@ -57,13 +59,12 @@ class Appointment:
 
     @staticmethod
     def create_appointment(**kwargs):
-        initiator = kwargs.get('initiator')
         subject = kwargs.get('subject')
         description = kwargs.get('description')
         additional_info = kwargs.get('additional_info')
         dates = kwargs.get('dates')
         time = kwargs.get('time')
-        return Appointment(initiator, subject, description, additional_info, dates, time)
+        return Appointment(subject, description, additional_info, dates, time)
 
     def get_id(self):
         return self.id

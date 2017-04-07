@@ -2,7 +2,7 @@
 {% block content_form %}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">{{ appointment.subject }} <small><a href="/appointment/{{ appointment.id }}/participants">Participants</a></small></h3>
+        <h3 class="panel-title">{{ appointment.subject }}</h3>
     </div>
     <div class="panel-body">
         <form method="post">
@@ -43,6 +43,7 @@
                         <input class="form-control" placeholder="Enter email" name="email" type="text" value="{{ email }}">
                     </div>
                     <input class="btn btn-primary" type="submit" value="Submit">
+                    <a href="/appointment/{{ appointment.id }}/log_in" class="btn btn-link btn-sm" role="button">Participants list</a>
                 </div>
             </div>
         </form>
